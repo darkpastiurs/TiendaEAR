@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <name>TiendaYuGiOh</name>
+    <component>
+        <component-type>org.primefaces.component.SerenityMenu</component-type>
+        <component-class>org.primefaces.serenity.component.SerenityMenu</component-class>
+    </component>
+
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SerenityMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.serenity.component.SerenityMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/public/login.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/public/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>categoriascartas</from-outcome>
+            <to-view-id>/administracion/cartas/categorias/listado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>categoriascartasgestion</from-outcome>
+            <to-view-id>/administracion/cartas/categorias/gestion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>atributosmonstruos</from-outcome>
+            <to-view-id>/administracion/cartas/mounstruos/atributos/listado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>atributosmonstruosgestion</from-outcome>
+            <to-view-id>/administracion/cartas/mounstruos/atributos/gestion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>tiposmonstruos</from-outcome>
+            <to-view-id>/administracion/cartas/mounstruos/tipos/listado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>tiposmonstruosgestion</from-outcome>
+            <to-view-id>/administracion/cartas/mounstruos/tipos/gestion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+</faces-config>
