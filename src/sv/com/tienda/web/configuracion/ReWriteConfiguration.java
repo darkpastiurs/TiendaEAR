@@ -35,14 +35,14 @@ public class ReWriteConfiguration extends HttpConfigurationProvider {
                 Join.path("/administracion/categorias")
                         .to("/administracion/cartas/categorias/listado.xhtml")
         );
-//        config.addRule(
-//                Join.path("/administracion/categoria/nueva")
-//                        .to("/administracion/cartas/categorias/gestion.xhtml")
-//        )
-//                .withId("categoriascartasnuevo")
-//                .perform(PhaseOperation.enqueue(
-//                        Invoke.binding(El.retrievalMethod("navigationWebBean.redireccionar"))
-//                ));
+        config.addRule(
+                Join.path("/administracion/categoria/nueva")
+                        .to("/administracion/cartas/categorias/gestion.xhtml")
+        )
+                .withId("categoriascartasnuevo")
+                .perform(PhaseOperation.enqueue(
+                        Invoke.binding(El.retrievalMethod("navigationWebBean.redireccionar"))
+                ));
         config.addRule(
                 Join.path("/administracion/categoria/editar/{categoria}/")
                         .to("/administracion/cartas/categorias/gestion.xhtml")
