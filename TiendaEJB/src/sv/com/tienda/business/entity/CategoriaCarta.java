@@ -30,9 +30,19 @@ public class CategoriaCarta implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
+    @Transient
+    private boolean remover;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
     @JoinColumn(name = "idcategoriasuperior", referencedColumnName = "id")
     private CategoriaCarta categoriaCartaSuperior;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ComponenteDeck.class)
+    @JoinTable(name = "componente_categoria_carta", schema = "cat",
+            joinColumns = @JoinColumn(name = "idcategoria", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "idcomponente", referencedColumnName = "id")
+    )
+    private List<ComponenteDeck> componentesDecks;
 
     @OneToMany(mappedBy = "categoriaCartaSuperior", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
     private List<CategoriaCarta> subcategorias;
@@ -88,6 +98,22 @@ public class CategoriaCarta implements Serializable {
         this.cartas = cartas;
     }
 
+    public List<ComponenteDeck> getComponentesDecks() {
+        return componentesDecks;
+    }
+
+    public void setComponentesDecks(List<ComponenteDeck> componenteDeck) {
+        this.componentesDecks = componenteDeck;
+    }
+
+    public boolean isRemover() {
+        return remover;
+    }
+
+    public void setRemover(boolean remover) {
+        this.remover = remover;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +136,7 @@ public class CategoriaCarta implements Serializable {
         sb.append(", nombre='").append(nombre);
         sb.append(", estado='").append(estado);
         sb.append(", categoriaCartaSuperior=").append(categoriaCartaSuperior);
+        sb.append(", componenteDeck=").append(componentesDecks);
         sb.append(", subcategorias=").append(subcategorias == null ? 0 : subcategorias.size());
         sb.append('}');
         return sb.toString();

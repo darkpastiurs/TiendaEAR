@@ -91,10 +91,8 @@ public class SessionController implements Serializable {
                             if (submenu.isEstado()) {
                                 DefaultMenuItem menuItem = new DefaultMenuItem(submenu.getNombre());
                                 menuItem.setIcon(submenu.getIcono());
-                                if (submenu.getDireccion().contains("monstruo") || submenu.getDireccion().contains("categoria")) {
-                                    menuItem.setAjax(false);
-                                    menuItem.setCommand(submenu.getDireccion());
-                                    //menuItem.setOutcome(submenu.getDireccion());
+                                if (menu.getNombre().contains("Cat")) {
+                                    menuItem.setOutcome(submenu.getDireccion());
                                 }
                                 menuSuperior.addElement(menuItem);
                             }

@@ -6,6 +6,11 @@
                 xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/plantilla/plantilla.xhtml">
 
+    <f:metadata>
+        <f:viewParam name="categoriaSelected" value="#{gestionCategoriaBean.nombreCategoriaFormateado}" />
+    </f:metadata>
+    <f:view afterPhase="#{gestionCategoriaBean.destroy}" />
+
     <ui:define name="titulo">
         <c:choose>
             <c:when test="#{gestionCategoriaBean.nombre == null}">

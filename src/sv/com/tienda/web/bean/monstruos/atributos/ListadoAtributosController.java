@@ -100,6 +100,7 @@ public class ListadoAtributosController implements Serializable {
         if(atributoMonstruoSeleccionado != null){
             cartaBean.eliminarAtributoMonstruo(atributoMonstruoSeleccionado);
         } else {
+            fc.getExternalContext().getFlash().setKeepMessages(true);
             fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atributo Monstruo", "No se ha seleccionado ningun registro"));
         }
         return "atributos";

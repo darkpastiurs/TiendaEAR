@@ -3,7 +3,6 @@ package sv.com.tienda.web.bean.categoriacartas;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.CategoriaCarta;
 import sv.com.tienda.business.utils.Constantes;
-import sv.com.tienda.web.bean.usuario.NavigationControlller;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -12,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
@@ -41,8 +39,6 @@ public class ListadoCategoriaController implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    @Inject
-    private NavigationControlller navController;
     private List<CategoriaCarta> categoriaCartaList;
     //</editor-fold>
 
@@ -89,9 +85,6 @@ public class ListadoCategoriaController implements Serializable {
             if (categoriaCartaSeleccionada != null) {
                 HttpSession sesion = (HttpSession) fc.getExternalContext().getSession(false);
                 sesion.setAttribute("categoriaCartaSeleccionada", categoriaCartaSeleccionada);
-                navController.setDatoSeleccionado(categoriaCartaSeleccionada.getNombre());
-                navController.setPaginaId("categoriascartaseditar");
-                navController.setPaginaDefaultId("categoriascartasnuevo");
                 return "categoriascartasgestion";
             } else {
                 fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Categoria Cartas", "No se ha seleccionado ninguna categoria"));

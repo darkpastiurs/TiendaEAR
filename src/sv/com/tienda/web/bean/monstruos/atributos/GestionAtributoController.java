@@ -4,11 +4,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.AtributoMonstruo;
 import sv.com.tienda.business.utils.Constantes;
+import sv.com.tienda.web.utils.FormateoDeCadenas;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
@@ -38,6 +41,10 @@ public class GestionAtributoController implements Serializable {
     private CartaBeanLocal cartaBean;
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Variables">
+    private String nombreAtributoFormateado;
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Eventos de carga y descarga de la pagina">
     @PostConstruct
     private void initial(){
@@ -48,20 +55,23 @@ public class GestionAtributoController implements Serializable {
             if(variablesSesion.containsKey("atributoMonstruoSeleccionado")){
                 atributoMonstruoSelected = (AtributoMonstruo) variablesSesion.get("atributoMonstruoSeleccionado");
                 nombre = atributoMonstruoSelected.getNombre();
+                nombreAtributoFormateado = FormateoDeCadenas.formatoURLEdicion(nombre);
             }
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[GestionAtributoController][initial][Excepcion] -> ", e);
         }
     }
 
-    @PreDestroy
-    private void destroy() {
+//    @PreDestroy
+    public void destroy(PhaseEvent evt) {
         LOG.log(INFO, "[GestionAtributoController][destroy]");
         try {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
-            if(variablesSesion.containsKey("atributoMonstruoSeleccionado")){
-                variablesSesion.remove("atributoMonstruoSeleccionado");
+            if(evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
+                if (variablesSesion.containsKey("atributoMonstruoSeleccionado")) {
+                    variablesSesion.remove("atributoMonstruoSeleccionado");
+                }
             }
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[GestionAtributoController][initial][Excepcion] -> ", e);
@@ -86,6 +96,13 @@ public class GestionAtributoController implements Serializable {
         this.atributoMonstruoSelected = atributoMonstruoSelected;
     }
 
+    public String getNombreAtributoFormateado() {
+        return nombreAtributoFormateado;
+    }
+
+    public void setNombreAtributoFormateado(String nombreAtributoFormateado) {
+        this.nombreAtributoFormateado = nombreAtributoFormateado;
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Acciones y/o Eventos">

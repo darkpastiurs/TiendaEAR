@@ -5,15 +5,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.CategoriaCarta;
 import sv.com.tienda.business.utils.Constantes;
-import sv.com.tienda.web.bean.usuario.NavigationControlller;
+import sv.com.tienda.web.utils.FormateoDeCadenas;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ public class GestionCategoriaController implements Serializable {
 
     private static final long serialVersionUID = -7615971252304880835L;
     private static final Logger LOG = Logger.getLogger(GestionCategoriaController.class.getName());
-    
+
     //<editor-fold defaultstate="collapsed" desc="Componentes">
     @NotNull(message = "El nombre es obligatorio")
     @NotEmpty(message = "El nombre es obligatorio")
@@ -40,30 +40,30 @@ public class GestionCategoriaController implements Serializable {
     private CategoriaCarta categoriaCartaSuperior;
     private List<CategoriaCarta> categoriaCartasSuperiorModel;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="EJB">
     @EJB(lookup = Constantes.JDNI_CARTA_BEAN)
     private CartaBeanLocal cartaBean;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    @Inject
-    private NavigationControlller navController;
     private CategoriaCarta categoriaCartaSelected;
+    private String nombreCategoriaFormateado;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Eventos de carga y descarga de la pagina">
     @PostConstruct
-    public void initial(){
+    public void initial() {
         LOG.log(INFO, "[GestionCategoriaController][initial]");
         try {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession sesion = (HttpSession) fc.getExternalContext().getSession(false);
-            if(EnumerationUtils.toList(sesion.getAttributeNames()).contains("categoriaCartaSeleccionada")){
+            if (EnumerationUtils.toList(sesion.getAttributeNames()).contains("categoriaCartaSeleccionada")) {
                 categoriaCartaSelected = (CategoriaCarta) sesion.getAttribute("categoriaCartaSeleccionada");
                 nombre = categoriaCartaSelected.getNombre();
+                nombreCategoriaFormateado = FormateoDeCadenas.formatoURLEdicion(nombre);
                 subcategoria = categoriaCartaSelected.getCategoriaCartaSuperior() != null;
-                if(subcategoria) {
+                if (subcategoria) {
                     categoriaCartaSuperior = categoriaCartaSelected.getCategoriaCartaSuperior();
                 }
             }
@@ -73,14 +73,19 @@ public class GestionCategoriaController implements Serializable {
         }
     }
 
-    @PreDestroy
-    public void destroy() {
+    //    @PreDestroy
+    public void destroy(PhaseEvent evt) {
         LOG.log(Level.INFO, "[GestionCategoriaController][destroy]");
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpSession sesion = (HttpSession) fc.getExternalContext().getSession(false);
-        if(EnumerationUtils.toList(sesion.getAttributeNames()).contains("categoriaCartaSeleccionada")){
-            sesion.removeAttribute("categoriaCartaSeleccionada");
-            navController.clearData();
+        try {
+            if (evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                HttpSession sesion = (HttpSession) fc.getExternalContext().getSession(false);
+                if (EnumerationUtils.toList(sesion.getAttributeNames()).contains("categoriaCartaSeleccionada")) {
+                    sesion.removeAttribute("categoriaCartaSeleccionada");
+                }
+            }
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[GestionCategoriaController][destroy][Excepcion] -> ", e);
         }
     }
     //</editor-fold>
@@ -118,11 +123,20 @@ public class GestionCategoriaController implements Serializable {
         this.categoriaCartasSuperiorModel = categoriaCartasSuperiorModel;
     }
 
+    public String getNombreCategoriaFormateado() {
+        return nombreCategoriaFormateado;
+    }
+
+    public void setNombreCategoriaFormateado(String nombreCategoriaFormateado) {
+        this.nombreCategoriaFormateado = nombreCategoriaFormateado;
+    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Eventos y/o acciones">
+
     /**
      * Metodo encargado de realizar la operacion de adicion/edicion de categorias de cartas
+     *
      * @return
      * @throws Exception
      */
@@ -134,10 +148,10 @@ public class GestionCategoriaController implements Serializable {
         try {
             CategoriaCarta categoriaCartaGuardar = new CategoriaCarta();
             categoriaCartaGuardar.setNombre(nombre);
-            if(subcategoria){
+            if (subcategoria) {
                 categoriaCartaGuardar.setCategoriaCartaSuperior(categoriaCartaSuperior);
             }
-            if(categoriaCartaSelected != null){
+            if (categoriaCartaSelected != null) {
                 categoriaCartaGuardar.setId(categoriaCartaSelected.getId());
             }
             cartaBean.guardarCategoriaCarta(categoriaCartaGuardar);

@@ -4,10 +4,14 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/plantilla/plantilla.xhtml" xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewParam name="tipo" value="#{gestionTiposMonstruosWebBean.nombreTipoMonstruoFormateado}"/>
+    </f:metadata>
+    <f:view afterPhase="#{gestionTiposMonstruosWebBean.destroy}" />
 
     <ui:define name="titulo">
         <c:choose>
-            <c:when test="#{gestionTiposMonstruosWebBean.tipoMounstroSelected == null}">
+            <c:when test="#{gestionTiposMonstruosWebBean.tipoMonstruoSelected == null}">
                 Registro de un nuevo Tipo de Monstruo
             </c:when>
             <c:otherwise>
@@ -21,12 +25,12 @@
             <div class="ui-g-12">
                 <div class="card card-w-title">
                     <c:choose>
-                        <c:when test="#{gestionTiposMonstruosWebBean.tipoMounstroSelected == null}">
+                        <c:when test="#{gestionTiposMonstruosWebBean.tipoMonstruoSelected == null}">
                             <h1>Registro de un nuevo tipo de monstruo</h1>
                         </c:when>
                         <c:otherwise>
                             <h1>Editando el tipo de monstruo <h:outputText
-                                    value="#{gestionTiposMonstruosWebBean.tipoMounstroSelected.nombre}"
+                                    value="#{gestionTiposMonstruosWebBean.tipoMonstruoSelected.nombre}"
                                     style="font-weight: bold;"/></h1>
                         </c:otherwise>
                     </c:choose>

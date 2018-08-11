@@ -4,14 +4,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.TipoMounstro;
 import sv.com.tienda.business.utils.Constantes;
-import sv.com.tienda.web.bean.usuario.NavigationControlller;
+import sv.com.tienda.web.utils.FormateoDeCadenas;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -40,9 +40,8 @@ public class GestionTiposController implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    @Inject
-    private NavigationControlller navController;
-    private TipoMounstro tipoMounstroSelected;
+    private TipoMounstro tipoMonstruoSelected;
+    private String nombreTipoMonstruoFormateado;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Eventos de Carga y Descargar de la Pagina">
@@ -53,23 +52,25 @@ public class GestionTiposController implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
             Map<String, Object> variableSesion = fc.getExternalContext().getSessionMap();
             if(variableSesion.containsKey("tipoMonstruoSeleccionado")){
-                tipoMounstroSelected = (TipoMounstro) variableSesion.get("tipoMonstruoSeleccionado");
-                nombre = tipoMounstroSelected.getNombre();
+                tipoMonstruoSelected = (TipoMounstro) variableSesion.get("tipoMonstruoSeleccionado");
+                nombre = tipoMonstruoSelected.getNombre();
+                nombreTipoMonstruoFormateado = FormateoDeCadenas.formatoURLEdicion(nombre);
             }
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[GestionTiposController][initial][Excepcion] -> ", e);
         }
     }
 
-    @PreDestroy
-    private void destroy(){
+    //@PreDestroy
+    public void destroy(PhaseEvent evt){
         LOG.log(INFO, "[GestionTiposController][destroy]");
         try {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
-            if(variablesSesion.containsKey("tipoMonstruoSeleccionado")){
-                variablesSesion.remove("tipoMonstruoSeleccionado");
-                navController.clearData();
+            if(evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
+                if (variablesSesion.containsKey("tipoMonstruoSeleccionado")) {
+                    variablesSesion.remove("tipoMonstruoSeleccionado");
+                }
             }
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[GestionTiposController][destroy][Excepcion] -> ", e);
@@ -86,22 +87,30 @@ public class GestionTiposController implements Serializable {
         this.nombre = nombre;
     }
 
-    public TipoMounstro getTipoMounstroSelected() {
-        return tipoMounstroSelected;
+    public TipoMounstro getTipoMonstruoSelected() {
+        return tipoMonstruoSelected;
     }
 
-    public void setTipoMounstroSelected(TipoMounstro tipoMounstroSelected) {
-        this.tipoMounstroSelected = tipoMounstroSelected;
+    public void setTipoMonstruoSelected(TipoMounstro tipoMonstruoSelected) {
+        this.tipoMonstruoSelected = tipoMonstruoSelected;
     }
-    //</editor-fold>
+
+    public String getNombreTipoMonstruoFormateado() {
+        return nombreTipoMonstruoFormateado;
+    }
+
+    public void setNombreTipoMonstruoFormateado(String nombreTipoMonstruoFormateado) {
+        this.nombreTipoMonstruoFormateado = nombreTipoMonstruoFormateado;
+    }
+//</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Acciones y/o Eventos">
     public String guardaTipo() throws Exception {
         LOG.log(INFO, "[GestionTiposController][guardaTipo] -> {0}", new Object[]{nombre});
         try {
             TipoMounstro tipoMounstroGuardar = new TipoMounstro();
-            if(tipoMounstroSelected != null){
-                tipoMounstroGuardar.setId(tipoMounstroSelected.getId());
+            if(tipoMonstruoSelected != null){
+                tipoMounstroGuardar.setId(tipoMonstruoSelected.getId());
             }
             tipoMounstroGuardar.setNombre(nombre);
             cartasBean.guardarTipoMonstruo(tipoMounstroGuardar);

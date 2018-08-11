@@ -36,27 +36,37 @@
         <navigation-case>
             <from-outcome>categoriascartasgestion</from-outcome>
             <to-view-id>/administracion/cartas/categorias/gestion.xhtml</to-view-id>
-            <redirect />
+            <redirect include-view-params="true" />
         </navigation-case>
         <navigation-case>
             <from-outcome>atributosmonstruos</from-outcome>
-            <to-view-id>/administracion/cartas/mounstruos/atributos/listado.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas/monstruos/atributos/listado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>atributosmonstruosgestion</from-outcome>
-            <to-view-id>/administracion/cartas/mounstruos/atributos/gestion.xhtml</to-view-id>
-            <redirect />
+            <to-view-id>/administracion/cartas/monstruos/atributos/gestion.xhtml</to-view-id>
+            <redirect include-view-params="true"/>
         </navigation-case>
         <navigation-case>
             <from-outcome>tiposmonstruos</from-outcome>
-            <to-view-id>/administracion/cartas/mounstruos/tipos/listado.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas/monstruos/tipos/listado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>tiposmonstruosgestion</from-outcome>
-            <to-view-id>/administracion/cartas/mounstruos/tipos/gestion.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas/monstruos/tipos/gestion.xhtml</to-view-id>
+            <redirect include-view-params="true" />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>estructuradeck</from-outcome>
+            <to-view-id>/administracion/componentedeck/listado.xhtml</to-view-id>
             <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>estructuradeckgestion</from-outcome>
+            <to-view-id>/administracion/componentedeck/gestion.xhtml</to-view-id>
+            <redirect include-view-params="true" />
         </navigation-case>
     </navigation-rule>
 </faces-config>

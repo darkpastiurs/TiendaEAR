@@ -2,6 +2,7 @@ package sv.com.tienda.business.ejb;
 
 import sv.com.tienda.business.entity.AtributoMonstruo;
 import sv.com.tienda.business.entity.CategoriaCarta;
+import sv.com.tienda.business.entity.ComponenteDeck;
 import sv.com.tienda.business.entity.TipoMounstro;
 
 import javax.ejb.Local;
@@ -107,4 +108,31 @@ public interface CartaBeanLocal {
      * @param  tipoMounstroEliminar
      */
     void eliminarTipoMonstruo(TipoMounstro tipoMounstroEliminar);
+
+    /**
+     * Metodo encargado de retornar una lista de las partes de un deck
+     * @param estado
+     * @return Listado de Componentes
+     */
+    List<ComponenteDeck> obtenerListadoComponentesDeck(boolean estado);
+
+    /**
+     * Obtiene un componente o parte de la estructura de un deck
+     * por medio de su codigo
+     * @param id
+     * @return Componente del Deck
+     */
+    ComponenteDeck obtenerComponenteDeck(Integer id);
+
+    /**
+     * Metodo encargado de ingresar y actualizar los datos de un compoenente de deck
+     * @param componenteDeckGuardar
+     */
+    void guardarComponenteDeck(ComponenteDeck componenteDeckGuardar);
+
+    /**
+     * Metodo encargado de eliminar (ocultar) una parte de la estructura de un deck
+     * @param componenteDeckEliminar
+     */
+    void eliminarComponenteDeck(ComponenteDeck componenteDeckEliminar);
 }

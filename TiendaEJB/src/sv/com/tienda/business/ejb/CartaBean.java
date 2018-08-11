@@ -2,6 +2,7 @@ package sv.com.tienda.business.ejb;
 
 import sv.com.tienda.business.entity.AtributoMonstruo;
 import sv.com.tienda.business.entity.CategoriaCarta;
+import sv.com.tienda.business.entity.ComponenteDeck;
 import sv.com.tienda.business.entity.TipoMounstro;
 
 import javax.ejb.Stateless;
@@ -24,6 +25,7 @@ public class CartaBean implements CartaBeanLocal {
     private EntityManager em;
 
     //<editor-fold defaultstate="collapsed" desc="Metodos de Categorias de Cartas">
+
     /**
      * Obtiene el listado de todas las categorias registradas dependiendo de su estado
      *
@@ -39,6 +41,7 @@ public class CartaBean implements CartaBeanLocal {
             query = em.createNamedQuery("CategoriaCartas.findByEstado");
             query.setParameter("estado", estado);
             categoriaCartas = query.getResultList();
+
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoDeCategorias][Excepcion] -> ", e);
         }
@@ -48,6 +51,7 @@ public class CartaBean implements CartaBeanLocal {
     /**
      * Obtiene el lista de categorias de cartas superiores (en este caso solo se
      * consideran a Magicas, Trampas y Mounstros como categoria superior)
+     *
      * @return Listado Categoria Superior
      */
     @Override
@@ -67,11 +71,12 @@ public class CartaBean implements CartaBeanLocal {
 
     /**
      * Obtiene la categoria de carta de acuerdo a su id
+     *
      * @param id
      * @return Categoria de Carta
      */
     @Override
-    public CategoriaCarta obtenerCategoria(Integer id){
+    public CategoriaCarta obtenerCategoria(Integer id) {
         LOG.log(INFO, "[CartaBean][obtenerCategoria] -> {0}", new Object[]{id});
         CategoriaCarta categoriaCarta = null;
         Query query;
@@ -125,12 +130,12 @@ public class CartaBean implements CartaBeanLocal {
      */
     @Override
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
-    public void eliminarCategoriasCartas(CategoriaCarta categoriaCartaEliminar){
+    public void eliminarCategoriasCartas(CategoriaCarta categoriaCartaEliminar) {
         LOG.log(INFO, "[CartaBean][eliminarCategoriasCartas] -> {0}", new Object[]{categoriaCartaEliminar});
         try {
             CategoriaCarta categoriaCarta = em.find(CategoriaCarta.class, categoriaCartaEliminar.getId());
             categoriaCarta.setEstado(false);
-            if(categoriaCarta.getSubcategorias() != null && !categoriaCarta.getSubcategorias().isEmpty()){
+            if (categoriaCarta.getSubcategorias() != null && !categoriaCarta.getSubcategorias().isEmpty()) {
                 categoriaCarta.getSubcategorias().stream().forEach((CategoriaCarta subcategoria) -> {
                     subcategoria.setEstado(false);
                 });
@@ -142,8 +147,9 @@ public class CartaBean implements CartaBeanLocal {
         }
     }
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Metodos de Atributos de Monstruos">
+
     /**
      * Obtiene el listado de atributos de mounstros
      *
@@ -166,11 +172,11 @@ public class CartaBean implements CartaBeanLocal {
     }
 
     /**
-     * Metodo que obtiene un atributo de monstruo 
-     * 
+     * Metodo que obtiene un atributo de monstruo
+     *
      * @param id de atributo
      */
-    public AtributoMonstruo obtenerAtributoMonstruo(Integer id){
+    public AtributoMonstruo obtenerAtributoMonstruo(Integer id) {
         LOG.log(INFO, "[CartaBean][obtenerAtributoMonstruo] -> {0}", new Object[]{id});
         AtributoMonstruo resultado = null;
         Query query;
@@ -186,16 +192,16 @@ public class CartaBean implements CartaBeanLocal {
 
     /**
      * Metodo encargado de guardar ya sea un nuevo atributo a actualizar sus valores
-     * 
+     *
      * @param atributoMonstruoGuardar
      */
     @Override
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
-    public void guardarAtributoMonstruo(AtributoMonstruo atributoMonstruoGuardar){
+    public void guardarAtributoMonstruo(AtributoMonstruo atributoMonstruoGuardar) {
         LOG.log(INFO, "[CartaBean][guardarAtributoMonstruo] -> {0}", new Object[]{atributoMonstruoGuardar});
         try {
             AtributoMonstruo atributoMonstruo = null;
-            if(atributoMonstruoGuardar.getId() == null){
+            if (atributoMonstruoGuardar.getId() == null) {
                 atributoMonstruo = new AtributoMonstruo();
             } else {
                 atributoMonstruo = em.find(AtributoMonstruo.class, atributoMonstruoGuardar.getId());
@@ -203,7 +209,7 @@ public class CartaBean implements CartaBeanLocal {
 
             atributoMonstruo.setNombre(atributoMonstruoGuardar.getNombre());
 
-            if(atributoMonstruoGuardar.getId() == null){
+            if (atributoMonstruoGuardar.getId() == null) {
                 em.persist(atributoMonstruo);
             } else {
                 em.merge(atributoMonstruo);
@@ -216,15 +222,15 @@ public class CartaBean implements CartaBeanLocal {
 
     /**
      * Metodo encargado de eliminar (ocultar) los registros de atributos de monstruos
-     * 
+     *
      * @param atributoMonstruoEliminar
      */
     @Override
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
-    public void eliminarAtributoMonstruo(AtributoMonstruo atributoMonstruoEliminar){
+    public void eliminarAtributoMonstruo(AtributoMonstruo atributoMonstruoEliminar) {
         LOG.log(INFO, "[CartaBean][eliminarAtributoMonstro] -> {0}", new Object[]{atributoMonstruoEliminar});
         try {
-            AtributoMonstruo atributoMonstruo = em.find(AtributoMonstruo.class,atributoMonstruoEliminar.getId());
+            AtributoMonstruo atributoMonstruo = em.find(AtributoMonstruo.class, atributoMonstruoEliminar.getId());
             atributoMonstruo.setEstado(false);
             em.merge(atributoMonstruo);
             em.flush();
@@ -235,6 +241,7 @@ public class CartaBean implements CartaBeanLocal {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Metodos de Tipos de Monstruos">
+
     /**
      * Metodo encargado de traer el listado de todos los tipos de monstruos
      *
@@ -242,7 +249,7 @@ public class CartaBean implements CartaBeanLocal {
      * @return Listado de tipos de monstruos
      */
     @Override
-    public List<TipoMounstro> obtenerListadoTiposMonstruos(boolean estado){
+    public List<TipoMounstro> obtenerListadoTiposMonstruos(boolean estado) {
         LOG.log(INFO, "[CartaBean][obtenerListadoTiposMonstruos] -> {0}", new Object[]{estado});
         List<TipoMounstro> listado = null;
         try {
@@ -264,7 +271,7 @@ public class CartaBean implements CartaBeanLocal {
      * @return Tipo de Monstruo
      */
     @Override
-    public TipoMounstro obtenerTipoMonstruo(Integer id){
+    public TipoMounstro obtenerTipoMonstruo(Integer id) {
         LOG.log(INFO, "[CartaBean][obtenerTipoMonstruo] -> {0}", new Object[]{id});
         TipoMounstro resultado = null;
         Query query;
@@ -289,7 +296,7 @@ public class CartaBean implements CartaBeanLocal {
         LOG.log(INFO, "[CartaBean][guardarTipoMonstruo] -> {0}", new Object[]{tipoMonstruoGuardar});
         TipoMounstro tipoMounstro = null;
         try {
-            if(tipoMonstruoGuardar.getId() == null){
+            if (tipoMonstruoGuardar.getId() == null) {
                 tipoMounstro = new TipoMounstro();
             } else {
                 tipoMounstro = em.find(TipoMounstro.class, tipoMonstruoGuardar.getId());
@@ -297,7 +304,7 @@ public class CartaBean implements CartaBeanLocal {
 
             tipoMounstro.setNombre(tipoMonstruoGuardar.getNombre());
 
-            if(tipoMonstruoGuardar.getId() == null){
+            if (tipoMonstruoGuardar.getId() == null) {
                 em.persist(tipoMounstro);
             } else {
                 em.merge(tipoMounstro);
@@ -310,12 +317,12 @@ public class CartaBean implements CartaBeanLocal {
 
     /**
      * Metodo encargado de eliminar (ocultar) un tipo de monstruo
-     * 
-     * @param  tipoMounstroEliminar
+     *
+     * @param tipoMounstroEliminar
      */
     @Override
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
-    public void eliminarTipoMonstruo(TipoMounstro tipoMounstroEliminar){
+    public void eliminarTipoMonstruo(TipoMounstro tipoMounstroEliminar) {
         LOG.log(INFO, "[CartaBean][eliminarTipoMonstruo] -> {0}", new Object[]{tipoMounstroEliminar});
         try {
             TipoMounstro tipoMounstro = em.find(TipoMounstro.class, tipoMounstroEliminar.getId());
@@ -324,6 +331,110 @@ public class CartaBean implements CartaBeanLocal {
             em.flush();
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[CartaBean][eliminarTipoMonstruo][Excepcion] -> ", e);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Metodos de Estructura de Deck">
+
+    /**
+     * Metodo encargado de retornar una lista de las partes de un deck
+     *
+     * @param estado
+     * @return Listado de Componentes
+     */
+    @Override
+    public List<ComponenteDeck> obtenerListadoComponentesDeck(boolean estado) {
+        LOG.log(INFO, "[CartaBean][obtenerListadoComponentesDeck] -> {0}", new Object[]{estado});
+        List<ComponenteDeck> listado = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("ComponenteDeck.findAllByEstado");
+            query.setParameter("estado", estado);
+            listado = query.getResultList();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoComponentesDeck][Excepcion] -> ", e);
+        }
+        return listado;
+    }
+
+    /**
+     * Obtiene un componente o parte de la estructura de un deck
+     * por medio de su codigo
+     *
+     * @param id
+     * @return Componente del Deck
+     */
+    @Override
+    public ComponenteDeck obtenerComponenteDeck(Integer id) {
+        LOG.log(INFO, "[CartaBean][obtenerComponenteDeck] -> {0}", new Object[]{id});
+        ComponenteDeck resultado = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("ComponenteDeck.findByIdActivo");
+            query.setParameter("id", id);
+            resultado = (ComponenteDeck) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerComponenteDeck][Excepcion] -> ", e);
+        }
+        return resultado;
+    }
+
+    /**
+     * Metodo encargado de ingresar y actualizar los datos de un compoenente de deck
+     *
+     * @param componenteDeckGuardar
+     */
+    @Override
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    public void guardarComponenteDeck(ComponenteDeck componenteDeckGuardar) {
+        LOG.log(INFO, "[CartaBean][guardarComponenteDeck] -> {0}", new Object[]{componenteDeckGuardar});
+        try {
+            ComponenteDeck componenteDeck;
+            if (componenteDeckGuardar.getId() == null) {
+                componenteDeck = new ComponenteDeck();
+            } else {
+                componenteDeck = em.find(ComponenteDeck.class, componenteDeckGuardar.getId());
+            }
+            componenteDeck.setSeccion(componenteDeckGuardar.getSeccion());
+            componenteDeck.setNumeroMinimo(componenteDeckGuardar.getNumeroMinimo());
+            componenteDeck.setNumeroMaximo(componenteDeckGuardar.getNumeroMaximo());
+            if (componenteDeckGuardar.getCategoriasCarta() != null) {
+                componenteDeckGuardar.getCategoriasCarta().stream().forEach((CategoriaCarta cc) -> {
+                    if (cc.isRemover()) {
+                        componenteDeck.removeCategoriaCarta(cc);
+                    } else {
+                        componenteDeck.addCategoriaCarta(cc);
+                    }
+                });
+            }
+            if (componenteDeckGuardar.getId() == null) {
+                em.persist(componenteDeck);
+            } else {
+                em.merge(componenteDeck);
+            }
+            em.flush();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][guardarComponenteDeck][Excepcion] -> ", e);
+        }
+    }
+
+    /**
+     * Metodo encargado de eliminar (ocultar) una parte de la estructura de un deck
+     *
+     * @param componenteDeckEliminar
+     */
+    @Override
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    public void eliminarComponenteDeck(ComponenteDeck componenteDeckEliminar) {
+        LOG.log(INFO, "[CartaBean][eliminarComponenteDeck] -> {0}", new Object[]{componenteDeckEliminar});
+        try {
+            ComponenteDeck componenteDeck = em.find(ComponenteDeck.class, componenteDeckEliminar.getId());
+            componenteDeck.setEstado(false);
+            em.merge(componenteDeck);
+            em.flush();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][eliminarComponenteDeck][Excepcion] -> ", e);
         }
     }
     //</editor-fold>

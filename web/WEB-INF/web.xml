@@ -21,7 +21,18 @@
         <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
         <param-value>true</param-value>
     </context-param>
-
+    <!--
+    <context-param>
+        <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FULL_STATE_SAVING_VIEW_IDS</param-name>
+        <param-value>
+            /administracion/cartas/categorias/gestion.xhtml
+        </param-value>
+    </context-param>
+    -->
     <security-role>
         <role-name>Propietario de tienda</role-name>
     </security-role>

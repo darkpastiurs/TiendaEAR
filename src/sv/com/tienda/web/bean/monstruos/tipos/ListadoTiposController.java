@@ -3,14 +3,12 @@ package sv.com.tienda.web.bean.monstruos.tipos;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.TipoMounstro;
 import sv.com.tienda.business.utils.Constantes;
-import sv.com.tienda.web.bean.usuario.NavigationControlller;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -38,8 +36,6 @@ public class ListadoTiposController implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Variables">
-    @Inject
-    private NavigationControlller navController;
     private TipoMounstro tipoMounstroSelected;
     //</editor-fold>
 
@@ -88,8 +84,6 @@ public class ListadoTiposController implements Serializable {
             if(tipoMounstroSelected != null){
                 Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
                 variablesSesion.put("tipoMonstruoSeleccionado", tipoMounstroSelected);
-                navController.setDatoSeleccionado(tipoMounstroSelected.getNombre());
-                navController.setPaginaId("tiposmonstruoseditar");
                 return "tiposmonstruosgestion";
             } else {
                 fc.getExternalContext().getFlash().setKeepMessages(true);

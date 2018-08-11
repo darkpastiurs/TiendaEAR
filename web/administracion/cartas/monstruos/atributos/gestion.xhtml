@@ -7,6 +7,11 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/plantilla/plantilla.xhtml">
 
+    <f:metadata>
+        <f:viewParam name="atributo" value="#{gestionAtributoMonstruoWebBean.nombreAtributoFormateado}" />
+    </f:metadata>
+    <f:view afterPhase="#{gestionAtributoMonstruoWebBean.destroy}" />
+
     <ui:define name="titulo">
         <c:choose>
             <c:when test="#{gestionAtributoMonstruoWebBean.atributoMonstruoSelected == null}">
