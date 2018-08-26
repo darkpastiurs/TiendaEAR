@@ -7,7 +7,6 @@ import sv.com.tienda.business.utils.Constantes;
 import sv.com.tienda.web.utils.FormateoDeCadenas;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -47,12 +46,12 @@ public class GestionAtributoController implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Eventos de carga y descarga de la pagina">
     @PostConstruct
-    private void initial(){
+    private void initial() {
         LOG.log(INFO, "[GestionAtributoController][initial]");
         try {
             FacesContext fc = FacesContext.getCurrentInstance();
             Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
-            if(variablesSesion.containsKey("atributoMonstruoSeleccionado")){
+            if (variablesSesion.containsKey("atributoMonstruoSeleccionado")) {
                 atributoMonstruoSelected = (AtributoMonstruo) variablesSesion.get("atributoMonstruoSeleccionado");
                 nombre = atributoMonstruoSelected.getNombre();
                 nombreAtributoFormateado = FormateoDeCadenas.formatoURLEdicion(nombre);
@@ -62,11 +61,11 @@ public class GestionAtributoController implements Serializable {
         }
     }
 
-//    @PreDestroy
+    //    @PreDestroy
     public void destroy(PhaseEvent evt) {
         LOG.log(INFO, "[GestionAtributoController][destroy]");
         try {
-            if(evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+            if (evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
                 if (variablesSesion.containsKey("atributoMonstruoSeleccionado")) {
@@ -106,12 +105,12 @@ public class GestionAtributoController implements Serializable {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Acciones y/o Eventos">
-    public String guardar() throws Exception{
+    public String guardar() throws Exception {
         LOG.log(INFO, "[GestionAtributoController][guardar] -> {0}", new Object[]{nombre});
         try {
             AtributoMonstruo atributoMonstruo = new AtributoMonstruo();
             atributoMonstruo.setNombre(nombre);
-            if(atributoMonstruoSelected != null){
+            if (atributoMonstruoSelected != null) {
                 atributoMonstruo.setId(atributoMonstruoSelected.getId());
             }
             cartaBean.guardarAtributoMonstruo(atributoMonstruo);

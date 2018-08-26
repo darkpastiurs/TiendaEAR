@@ -45,8 +45,8 @@ public class ListadoCategoriaController implements Serializable {
     @PostConstruct
     private void initial() {
         LOG.log(INFO, "[ListadoCategoriaController][initial]");
-        categoriaCartaList = cartaBean.obtenerListadoDeCategorias(true);
         try {
+            categoriaCartaList = cartaBean.obtenerListadoDeCategorias(true);
             if (categoriaCartaList != null && !categoriaCartaList.isEmpty()) {
                 categoriaCartaDataModel = new ListDataModel<>(categoriaCartaList);
             } else {

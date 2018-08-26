@@ -8,6 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(schema = "teo", name = "cartas")
+@NamedQueries({
+        @NamedQuery(name = "Cartas.findAll", query = "SELECT c FROM Carta c"),
+        @NamedQuery(name = "Cartas.findAllEstado", query = "SELECT c FROM Carta c WHERE c.estado = :estado"),
+        @NamedQuery(name = "Cartas.findByIdActivo", query = "SELECT c FROM Carta c WHERE c.id = :id AND c.estado = true")
+})
 @SequenceGenerator(schema = "teo", name = "Carta_seq_id", sequenceName = "cartas_id_seq", allocationSize = 1)
 public class Carta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -28,16 +33,23 @@ public class Carta implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
-    @JoinColumn(name = "idcategoria", referencedColumnName = "id")
-    private CategoriaCarta categoria;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = LimitacionCarta.class)
-    @JoinColumn(name = "idlimitacion", referencedColumnName = "id")
-    private LimitacionCarta limite;
+    @OneToOne(mappedBy = "carta", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Monstruo.class)
+    private Monstruo monstruo;
 
     @OneToMany(mappedBy = "carta", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = HistorialLimitacion.class)
     private List<HistorialLimitacion> historialLimitaciones;
+    @OneToMany(mappedBy = "carta", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Inventario.class)
+    private List<Inventario> inventarios;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class, optional = false)
+    @JoinColumn(name = "idcategoria", referencedColumnName = "id")
+    private CategoriaCarta categoria;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = LimitacionCarta.class, optional = false)
+    @JoinColumn(name = "idlimitacion", referencedColumnName = "id")
+    private LimitacionCarta limite;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Imagen.class, optional = false)
+    @JoinColumn(name = "idimagen", referencedColumnName = "id")
+    private Imagen ilustracion;
 
     public Long getId() {
         return id;
@@ -87,12 +99,36 @@ public class Carta implements Serializable {
         this.limite = limite;
     }
 
+    public Imagen getIlustracion() {
+        return ilustracion;
+    }
+
+    public void setIlustracion(Imagen ilustracion) {
+        this.ilustracion = ilustracion;
+    }
+
     public List<HistorialLimitacion> getHistorialLimitaciones() {
         return historialLimitaciones;
     }
 
     public void setHistorialLimitaciones(List<HistorialLimitacion> historialLimitaciones) {
         this.historialLimitaciones = historialLimitaciones;
+    }
+
+    public List<Inventario> getInventarios() {
+        return inventarios;
+    }
+
+    public void setInventarios(List<Inventario> inventarios) {
+        this.inventarios = inventarios;
+    }
+
+    public Monstruo getMonstruo() {
+        return monstruo;
+    }
+
+    public void setMonstruo(Monstruo monstruo) {
+        this.monstruo = monstruo;
     }
 
     @Override

@@ -7,6 +7,10 @@ import java.io.Serializable;
 @Entity
 @Table(schema = "cat", name = "tipos_escalas")
 @SequenceGenerator(schema = "cat", name = "TipoEscala_seq_id", sequenceName = "tipos_escalas_id_seq", allocationSize = 1)
+@NamedQueries({
+        @NamedQuery(name = "TipoEscalas.findAll", query = "SELECT te FROM TipoEscala te"),
+        @NamedQuery(name = "TipoEscalas.findById", query = "SELECT te FROM TipoEscala te WHERE te.id = :id")
+})
 public class TipoEscala implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -1,9 +1,6 @@
 package sv.com.tienda.business.ejb;
 
-import sv.com.tienda.business.entity.AtributoMonstruo;
-import sv.com.tienda.business.entity.CategoriaCarta;
-import sv.com.tienda.business.entity.ComponenteDeck;
-import sv.com.tienda.business.entity.TipoMounstro;
+import sv.com.tienda.business.entity.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -135,4 +132,82 @@ public interface CartaBeanLocal {
      * @param componenteDeckEliminar
      */
     void eliminarComponenteDeck(ComponenteDeck componenteDeckEliminar);
+
+    /**
+     * Metodo que obtiene el listado de los tipos de limitaciones
+     * de cartas en la banlist
+     *
+     * @return Listado de la limitaciones de cartas
+     */
+    List<LimitacionCarta> obtenerListadoLimitacion();
+
+    /**
+     * Metodo que obtiene el limite de cartas permitido en la banlist
+     *
+     * @param id
+     * @return Limitacion de Carta
+     */
+    LimitacionCarta obtenerLimitacion(Integer id);
+
+    /**
+     * Metodo encargado de obtener el listado de cartas registradas
+     *
+     * @param estado
+     * @return Listado de Cartas
+     */
+    List<Carta> obtenerListadoCartas(boolean estado);
+
+    /**
+     * Metodo que obtiene una carta en particular por medio del id y que su estado
+     * es activo
+     *
+     * @param id
+     * @return Carta
+     */
+    Carta obtenerCarta(Long id);
+
+    /**
+     * Metodo encargado de registrar o actualizar una carta
+     *
+     * @param cartaGuardar
+     */
+    void guardarCarta(Carta cartaGuardar);
+
+    /**
+     * Metodo encargado de eliminar(ocultar) una carta
+     *
+     *
+     */
+    void eliminarCarta(Carta cartaEliminar);
+
+    /**
+     * Metodo que obtiene el listado de los tipos de escala de
+     * monstruos
+     *
+     * @return Listado de la limitaciones de cartas
+     */
+    List<TipoEscala> obtenerListadoTipoEscala();
+
+    /**
+     * Metodo que obtiene el tipo de escala de un monstruo
+     *
+     * @param id
+     * @return Limitacion de Carta
+     */
+    TipoEscala obtenerTipoEscala(Integer id);
+
+    /**
+     * Metodo encargado de obtener el listado de las flechas de los monstruos link
+     *
+     * @return Listado de Flechas de Links
+     */
+    List<FlechaLink> obtenerListadoFlechasLink();
+
+    /**
+     * Metodo encargado de obtener la flecha de monstruos link
+     *
+     * @param id
+     * @return Flecha de Links
+     */
+    FlechaLink obtenerFlechaLink(Integer id);
 }

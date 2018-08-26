@@ -24,7 +24,7 @@ public class Nivel implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToMany(mappedBy = "niveles", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Usuario.class)
+    @ManyToMany(mappedBy = "niveles", fetch = FetchType.LAZY, targetEntity = Usuario.class)
     private List<Usuario> usuarios;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Menu.class)
     @JoinTable(name = "niveles_menus", schema = "sis",

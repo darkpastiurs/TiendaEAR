@@ -22,13 +22,13 @@ public class HistorialLimitacion implements Serializable {
     @Column(name = "fechamodificacion")
     private LocalDateTime fechaModificacion;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Carta.class)
     @JoinColumn(name = "idcarta", referencedColumnName = "id")
     private Carta carta;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = LimitacionCarta.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = LimitacionCarta.class)
     @JoinColumn(name = "idlimitacion", referencedColumnName = "id")
     private LimitacionCarta limitacionCarta;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Usuario.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Usuario.class)
     @JoinColumn(name = "idusuario", referencedColumnName = "username")
     private Usuario usuarioModifico;
 

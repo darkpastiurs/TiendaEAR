@@ -30,32 +30,32 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>categoriascartas</from-outcome>
-            <to-view-id>/administracion/cartas/categorias/listado.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/categorias/listado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>categoriascartasgestion</from-outcome>
-            <to-view-id>/administracion/cartas/categorias/gestion.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/categorias/gestion.xhtml</to-view-id>
             <redirect include-view-params="true" />
         </navigation-case>
         <navigation-case>
             <from-outcome>atributosmonstruos</from-outcome>
-            <to-view-id>/administracion/cartas/monstruos/atributos/listado.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/monstruos/atributos/listado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>atributosmonstruosgestion</from-outcome>
-            <to-view-id>/administracion/cartas/monstruos/atributos/gestion.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/monstruos/atributos/gestion.xhtml</to-view-id>
             <redirect include-view-params="true"/>
         </navigation-case>
         <navigation-case>
             <from-outcome>tiposmonstruos</from-outcome>
-            <to-view-id>/administracion/cartas/monstruos/tipos/listado.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/monstruos/tipos/listado.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>tiposmonstruosgestion</from-outcome>
-            <to-view-id>/administracion/cartas/monstruos/tipos/gestion.xhtml</to-view-id>
+            <to-view-id>/administracion/cartas-gestion/monstruos/tipos/gestion.xhtml</to-view-id>
             <redirect include-view-params="true" />
         </navigation-case>
         <navigation-case>
@@ -66,6 +66,16 @@
         <navigation-case>
             <from-outcome>estructuradeckgestion</from-outcome>
             <to-view-id>/administracion/componentedeck/gestion.xhtml</to-view-id>
+            <redirect include-view-params="true" />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>cartas</from-outcome>
+            <to-view-id>/administracion/cartas-gestion/listado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>cartasgestion</from-outcome>
+            <to-view-id>/administracion/cartas-gestion/gestion.xhtml</to-view-id>
             <redirect include-view-params="true" />
         </navigation-case>
     </navigation-rule>

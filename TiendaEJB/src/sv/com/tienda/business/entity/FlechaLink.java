@@ -8,6 +8,10 @@ import java.io.Serializable;
 @Entity
 @Table(schema = "cat", name = "flechas_links")
 @SequenceGenerator(schema = "cat", name = "FlechaLink_seq_id", sequenceName = "flechas_links_id_seq")
+@NamedQueries({
+        @NamedQuery(name = "FlechasLink.findAll", query = "SELECT fl FROM FlechaLink fl"),
+        @NamedQuery(name = "FlechasLink.findById", query = "SELECT fl FROM FlechaLink fl WHERE fl.id = :id")
+})
 public class FlechaLink implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -35,6 +35,13 @@ public class Usuario implements Serializable {
             joinColumns = @JoinColumn(name = "idusuario", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "idnivel", referencedColumnName = "id"))
     private List<Nivel> niveles;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Imagen.class)
+    @JoinColumn(name = "idimagen", referencedColumnName = "id")
+    private Imagen imagenPerfil;
+
+    @OneToMany(mappedBy = "usuarioDueño", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Tienda.class)
+    private List<Tienda> tiendas;
+
 
     public String getNickname() {
         return nickname;
@@ -74,6 +81,22 @@ public class Usuario implements Serializable {
 
     public void setNiveles(List<Nivel> niveles) {
         this.niveles = niveles;
+    }
+
+    public Imagen getImagenPerfil() {
+        return imagenPerfil;
+    }
+
+    public void setImagenPerfil(Imagen imagenPerfil) {
+        this.imagenPerfil = imagenPerfil;
+    }
+
+    public List<Tienda> getTiendas() {
+        return tiendas;
+    }
+
+    public void setTiendas(List<Tienda> tiendas) {
+        this.tiendas = tiendas;
     }
 
     @Override

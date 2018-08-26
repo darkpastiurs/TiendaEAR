@@ -46,12 +46,12 @@ public class GestionTiposController implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="Eventos de Carga y Descargar de la Pagina">
     @PostConstruct
-    private void initial(){
+    private void initial() {
         LOG.log(INFO, "[GestionTiposController][initial]");
         try {
             FacesContext fc = FacesContext.getCurrentInstance();
             Map<String, Object> variableSesion = fc.getExternalContext().getSessionMap();
-            if(variableSesion.containsKey("tipoMonstruoSeleccionado")){
+            if (variableSesion.containsKey("tipoMonstruoSeleccionado")) {
                 tipoMonstruoSelected = (TipoMounstro) variableSesion.get("tipoMonstruoSeleccionado");
                 nombre = tipoMonstruoSelected.getNombre();
                 nombreTipoMonstruoFormateado = FormateoDeCadenas.formatoURLEdicion(nombre);
@@ -62,10 +62,10 @@ public class GestionTiposController implements Serializable {
     }
 
     //@PreDestroy
-    public void destroy(PhaseEvent evt){
+    public void destroy(PhaseEvent evt) {
         LOG.log(INFO, "[GestionTiposController][destroy]");
         try {
-            if(evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
+            if (evt.getPhaseId() == PhaseId.RENDER_RESPONSE) {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 Map<String, Object> variablesSesion = fc.getExternalContext().getSessionMap();
                 if (variablesSesion.containsKey("tipoMonstruoSeleccionado")) {
@@ -109,7 +109,7 @@ public class GestionTiposController implements Serializable {
         LOG.log(INFO, "[GestionTiposController][guardaTipo] -> {0}", new Object[]{nombre});
         try {
             TipoMounstro tipoMounstroGuardar = new TipoMounstro();
-            if(tipoMonstruoSelected != null){
+            if (tipoMonstruoSelected != null) {
                 tipoMounstroGuardar.setId(tipoMonstruoSelected.getId());
             }
             tipoMounstroGuardar.setNombre(nombre);

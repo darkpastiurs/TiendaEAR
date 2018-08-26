@@ -6,11 +6,15 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(schema = "cat", name = "limitaciones_cartas")
 @SequenceGenerator(schema = "cat", name = "LimitacionCarta_seq_id", sequenceName = "limitaciones_cartas_id_seq", allocationSize = 1)
-
+@NamedQueries({
+        @NamedQuery(name = "LimitacionesCarta.findAll", query="SELECT lc FROM LimitacionCarta lc"),
+        @NamedQuery(name = "LimitacionesCarta.findById", query = "SELECT lc FROM LimitacionCarta lc WHERE lc.id = :id")
+})
 public class LimitacionCarta implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +34,9 @@ public class LimitacionCarta implements Serializable {
     private Short cantidad;
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
+
+    @OneToMany(mappedBy = "limite", fetch = FetchType.LAZY, targetEntity = Carta.class)
+    private List<Carta> cartas;
 
     public Integer getId() {
         return id;
@@ -61,6 +68,14 @@ public class LimitacionCarta implements Serializable {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public List<Carta> getCartas() {
+        return cartas;
+    }
+
+    public void setCartas(List<Carta> cartas) {
+        this.cartas = cartas;
     }
 
     @Override

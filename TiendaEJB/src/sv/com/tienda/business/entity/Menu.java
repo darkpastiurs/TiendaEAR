@@ -29,13 +29,13 @@ public class Menu implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToMany(mappedBy = "menus", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Nivel.class)
+    @ManyToMany(mappedBy = "menus", fetch = FetchType.LAZY, targetEntity = Nivel.class)
     private List<Nivel> niveles;
 
     @OneToMany(mappedBy = "menuSuperior", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Menu.class)
     private List<Menu> submenus;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Menu.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Menu.class)
     @JoinColumn(name = "idmenusuperior", referencedColumnName = "id")
     private Menu menuSuperior;
 

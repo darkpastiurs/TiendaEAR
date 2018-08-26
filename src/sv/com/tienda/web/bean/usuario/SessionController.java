@@ -70,7 +70,7 @@ public class SessionController implements Serializable {
         this.nivelesUsuario = nivelesUsuario;
     }
 
-    private void construirMenu(){
+    private void construirMenu() {
         LOG.log(Level.INFO, "[SessionController][construirMenu]");
         menuModel = new DefaultMenuModel();
         DefaultMenuItem inicioItem = new DefaultMenuItem("Inicio");
@@ -91,9 +91,9 @@ public class SessionController implements Serializable {
                             if (submenu.isEstado()) {
                                 DefaultMenuItem menuItem = new DefaultMenuItem(submenu.getNombre());
                                 menuItem.setIcon(submenu.getIcono());
-                                if (menu.getNombre().contains("Cat")) {
-                                    menuItem.setOutcome(submenu.getDireccion());
-                                }
+                                menuItem.setOutcome(submenu.getDireccion());
+                                //menuItem.setCommand(submenu.getDireccion());
+                                //menuItem.setAjax(false);
                                 menuSuperior.addElement(menuItem);
                             }
                         });
@@ -102,6 +102,9 @@ public class SessionController implements Serializable {
                         if (menu.isEstado()) {
                             DefaultMenuItem menuItem = new DefaultMenuItem(menu.getNombre());
                             menuItem.setIcon(menu.getIcono());
+                            if (menu.getNombre().contains("Cart")) {
+                                menuItem.setOutcome(menu.getDireccion());
+                            }
                             menuModel.addElement(menuItem);
                         }
                     }
@@ -112,7 +115,7 @@ public class SessionController implements Serializable {
     }
 
     public MenuModel getMenuModel() {
-        if(menuModel == null || menuModel.getElements().size() < 2){
+        if (menuModel == null || menuModel.getElements().size() < 2) {
             construirMenu();
         }
         return menuModel;

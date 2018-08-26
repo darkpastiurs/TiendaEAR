@@ -1,9 +1,6 @@
 package sv.com.tienda.business.ejb;
 
-import sv.com.tienda.business.entity.AtributoMonstruo;
-import sv.com.tienda.business.entity.CategoriaCarta;
-import sv.com.tienda.business.entity.ComponenteDeck;
-import sv.com.tienda.business.entity.TipoMounstro;
+import sv.com.tienda.business.entity.*;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -435,6 +432,236 @@ public class CartaBean implements CartaBeanLocal {
             em.flush();
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "[CartaBean][eliminarComponenteDeck][Excepcion] -> ", e);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Metodos de Cartas">
+
+    //<editor-fold defaultstate="collapsed" desc="Limitaciones de Cartas">
+
+    /**
+     * Metodo que obtiene el listado de los tipos de limitaciones
+     * de cartas en la banlist
+     *
+     * @return Listado de la limitaciones de cartas
+     */
+    @Override
+    public List<LimitacionCarta> obtenerListadoLimitacion() {
+        LOG.log(INFO, "[CartaBean][obtenerListadoLimitacion]");
+        List<LimitacionCarta> limitacionCartas = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("LimitacionesCarta.findAll");
+            limitacionCartas = query.getResultList();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoLimitacion][Excepcion] -> ", e);
+        }
+        return limitacionCartas;
+    }
+
+    /**
+     * Metodo que obtiene el limite de cartas permitido en la banlist
+     *
+     * @param id
+     * @return Limitacion de Carta
+     */
+    @Override
+    public LimitacionCarta obtenerLimitacion(Integer id) {
+        LOG.log(INFO, "[CartaBean][obtenerLimitacion] -> {0}", new Object[]{id});
+        LimitacionCarta limitacionCarta = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("LimitacionesCarta.findById");
+            query.setParameter("id", id);
+            limitacionCarta = (LimitacionCarta) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerLimitacion][Excepcion] -> ", e);
+        }
+        return limitacionCarta;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Tipos de Escala">
+
+    /**
+     * Metodo que obtiene el listado de los tipos de escala de
+     * monstruos
+     *
+     * @return Listado de la limitaciones de cartas
+     */
+    @Override
+    public List<TipoEscala> obtenerListadoTipoEscala() {
+        LOG.log(INFO, "[CartaBean][obtenerListadoTipoEscala]");
+        List<TipoEscala> tipoEscalas = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("TipoEscalas.findAll");
+            tipoEscalas = query.getResultList();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoTipoEscala][Excepcion] -> ", e);
+        }
+        return tipoEscalas;
+    }
+
+    /**
+     * Metodo que obtiene el tipo de escala de un monstruo
+     *
+     * @param id
+     * @return Limitacion de Carta
+     */
+    @Override
+    public TipoEscala obtenerTipoEscala(Integer id) {
+        LOG.log(INFO, "[CartaBean][obtenerTipoEscala] -> {0}", new Object[]{id});
+        TipoEscala tipoEscala = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("TipoEscalas.findById");
+            query.setParameter("id", id);
+            tipoEscala = (TipoEscala) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerTipoEscala][Excepcion] -> ", e);
+        }
+        return tipoEscala;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Flechas Link">
+
+    /**
+     * Metodo encargado de obtener el listado de las flechas de los monstruos link
+     *
+     * @return Listado de Flechas de Links
+     */
+    @Override
+    public List<FlechaLink> obtenerListadoFlechasLink() {
+        LOG.log(Level.INFO, "[CartaBean][obtenerListadoFlechasLink]");
+        List<FlechaLink> flechaLinks = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("FlechasLink.findAll");
+            flechaLinks = query.getResultList();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoFlechasLink][Excepcion] -> ", e);
+        }
+        return flechaLinks;
+    }
+
+    /**
+     * Metodo encargado de obtener la flecha de monstruos link
+     *
+     * @param id
+     * @return Flecha de Links
+     */
+    @Override
+    public FlechaLink obtenerFlechaLink(Integer id) {
+        LOG.log(Level.INFO, "[CartaBean][obtenerFlechaLink]");
+        FlechaLink flechaLink = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("FlechasLink.findById");
+            query.setParameter("id", id);
+            flechaLink = (FlechaLink) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerFlechaLink][Excepcion] -> ", e);
+        }
+        return flechaLink;
+    }
+    //</editor-fold>
+
+    /**
+     * Metodo encargado de obtener el listado de cartas registradas
+     *
+     * @param estado
+     * @return Listado de Cartas
+     */
+    @Override
+    public List<Carta> obtenerListadoCartas(boolean estado) {
+        LOG.log(INFO, "[CartaBean][obtenerListadoCarga] -> {0}", new Object[]{estado});
+        List<Carta> cartas = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("Cartas.findAllEstado");
+            query.setParameter("estado", estado);
+            cartas = query.getResultList();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerListadoCarga][Excepcion] -> ", e);
+        }
+        return cartas;
+    }
+
+    /**
+     * Metodo que obtiene una carta en particular por medio del id y que su estado
+     * es activo
+     *
+     * @param id
+     * @return Carta
+     */
+    @Override
+    public Carta obtenerCarta(Long id) {
+        LOG.log(INFO, "[CartaBean][obtenerCarta] -> {0}", new Object[]{id});
+        Carta carta = null;
+        Query query;
+        try {
+            query = em.createNamedQuery("Cartas.findByIdActivo");
+            query.setParameter("id", id);
+            carta = (Carta) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][obtenerCarta][Excepcion] -> ", e);
+        }
+        return carta;
+    }
+
+    /**
+     * Metodo encargado de registrar o actualizar una carta
+     *
+     * @param cartaGuardar
+     */
+    @Override
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    public void guardarCarta(Carta cartaGuardar) {
+        LOG.log(INFO, "[CartaBean][guardarCarta] -> {0}", new Object[]{cartaGuardar});
+        try {
+            Carta carta;
+            if (cartaGuardar.getId() == null) {
+                carta = new Carta();
+            } else {
+                carta = em.find(Carta.class, cartaGuardar.getId());
+            }
+            carta.setNombre(cartaGuardar.getNombre());
+            carta.setEfecto(cartaGuardar.getEfecto());
+            carta.setCategoria(cartaGuardar.getCategoria());
+            carta.setLimite(cartaGuardar.getLimite());
+            carta.setIlustracion(cartaGuardar.getIlustracion());
+            if (cartaGuardar.getMonstruo() != null) {
+                carta.setMonstruo(cartaGuardar.getMonstruo());
+            }
+            if (carta.getId() == null) {
+                em.persist(carta);
+            } else {
+                em.merge(carta);
+            }
+            em.flush();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][guardarCarta][Excepcion] -> ", e);
+        }
+    }
+
+    /**
+     * Metodo encargado de eliminar(ocultar) una carta
+     */
+    @Override
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    public void eliminarCarta(Carta cartaEliminar) {
+        LOG.log(INFO, "[CartaBean][eliminarCarta] -> {0}", new Object[]{cartaEliminar});
+        try {
+            Carta carta = em.find(Carta.class, cartaEliminar.getId());
+            carta.setEstado(false);
+            carta.getMonstruo().setEstado(false);
+            em.merge(carta);
+            em.flush();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "[CartaBean][eliminarCarta][Excepcion] -> ", e);
         }
     }
     //</editor-fold>

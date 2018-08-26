@@ -13,8 +13,8 @@ import java.util.ListIterator;
 @SequenceGenerator(schema = "cat", name = "ComponenteDeck_seq_id", sequenceName = "componentes_deck_id_seq", allocationSize = 1)
 @NamedQueries({
         @NamedQuery(name = "ComponenteDeck.findAll", query = "SELECT cd FROM ComponenteDeck cd"),
-        @NamedQuery(name = "ComponenteDeck.findAllByEstado", query="SELECT cd FROM ComponenteDeck cd WHERE cd.estado = :estado"),
-        @NamedQuery(name = "ComponenteDeck.findByIdActivo", query="SELECT cd FROM ComponenteDeck cd WHERE cd.id = :id AND cd.estado = true")
+        @NamedQuery(name = "ComponenteDeck.findAllByEstado", query = "SELECT cd FROM ComponenteDeck cd WHERE cd.estado = :estado"),
+        @NamedQuery(name = "ComponenteDeck.findByIdActivo", query = "SELECT cd FROM ComponenteDeck cd WHERE cd.id = :id AND cd.estado = true")
 })
 public class ComponenteDeck implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class ComponenteDeck implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToMany(mappedBy = "componentesDecks", cascade = CascadeType.ALL,fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
+    @ManyToMany(mappedBy = "componentesDecks", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
     private List<CategoriaCarta> categoriasCarta;
 
     public Integer getId() {
@@ -88,18 +88,20 @@ public class ComponenteDeck implements Serializable {
         this.categoriasCarta = categoriasCarta;
     }
 
-    public void addCategoriaCarta(CategoriaCarta categoriaCarta){
-        if(categoriasCarta == null){
-            categoriasCarta = new ArrayList<>();
+    public void addCategoriaCarta(CategoriaCarta categoriaCarta) {
+        if (categoriasCarta == null) {
+            categoriasCarta = new ArrayList<CategoriaCarta>();
         }
-        categoriaCarta.getComponentesDecks().add(this);
-        categoriasCarta.add(categoriaCarta);
+        if (!this.getCategoriasCarta().contains(categoriaCarta)) {
+            categoriaCarta.getComponentesDecks().add(this);
+            categoriasCarta.add(categoriaCarta);
+        }
     }
 
-    public void removeCategoriaCarta(CategoriaCarta categoriaCarta){
-        for(ListIterator<CategoriaCarta> iterador = categoriasCarta.listIterator(); iterador.hasNext();){
+    public void removeCategoriaCarta(CategoriaCarta categoriaCarta) {
+        for (ListIterator<CategoriaCarta> iterador = categoriasCarta.listIterator(); iterador.hasNext(); ) {
             CategoriaCarta categoriaCartaActual = iterador.next();
-            if(categoriaCartaActual.equals(categoriaCarta)){
+            if (categoriaCartaActual.equals(categoriaCarta)) {
                 categoriaCartaActual.setComponentesDecks(null);
                 iterador.remove();
             }

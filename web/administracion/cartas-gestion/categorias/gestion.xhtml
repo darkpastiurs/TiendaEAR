@@ -60,7 +60,7 @@
                             <p:selectOneMenu id="cboCategoriaSuperior"
                                              value="#{gestionCategoriaBean.categoriaCartaSuperior}" autoWidth="false"
                                              style="width: 100%" rendered="#{gestionCategoriaBean.subcategoria}"
-                                             converter="#{categoriaConvert}">
+                                             converter="CategoriaCartaConverter">
                                 <f:selectItem value="#{null}" itemValue="#{null}" itemLabel="Selecciona una categoria"/>
                                 <f:selectItems value="#{gestionCategoriaBean.categoriaCartasSuperiorModel}"
                                                var="categoria" itemValue="#{categoria}"

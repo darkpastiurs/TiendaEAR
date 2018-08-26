@@ -35,7 +35,7 @@ public class Pendulo implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Monstruo.class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Monstruo.class)
     @JoinColumn(name = "idmonstruo", referencedColumnName = "id")
     private Monstruo monstruo;
 

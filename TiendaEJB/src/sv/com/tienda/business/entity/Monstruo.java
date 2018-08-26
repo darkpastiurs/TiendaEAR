@@ -26,17 +26,21 @@ public class Monstruo implements Serializable {
     @Min(0)
     @Column(name = "defensa")
     private Integer defensa;
-    @NotNull
     @Column(name = "escala")
     private Short escala;
-    @NotNull
     @Lob
     @Column(name = "materialinvocacion")
     private String materialInvocacion;
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = AtributoMonstruo.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
+    @JoinColumn(name = "idcarta", referencedColumnName = "id")
+    private Carta carta;
+    @OneToOne(mappedBy = "monstruo", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pendulo.class)
+    private Pendulo penduloAtributos;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = AtributoMonstruo.class)
     @JoinColumn(name = "idatributo", referencedColumnName = "id")
     private AtributoMonstruo atributo;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = TipoMounstro.class)
@@ -44,17 +48,12 @@ public class Monstruo implements Serializable {
             joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "idtipomonstruo", referencedColumnName = "id"))
     private List<TipoMounstro> tipos;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
-    @JoinColumn(name = "idcarta", referencedColumnName = "id")
-    private Carta carta;
-    @OneToOne(mappedBy = "monstruo", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pendulo.class)
-    private Pendulo penduloAtributos;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = FlechaLink.class)
     @JoinTable(name = "links", schema = "teo",
             joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "idflecha", referencedColumnName = "id"))
     private List<FlechaLink> flechasLinks;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = TipoEscala.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = TipoEscala.class)
     @JoinColumn(name = "idtipoescala", referencedColumnName = "id")
     private TipoEscala tipoEscala;
 

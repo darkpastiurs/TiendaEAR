@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/plantilla/plantilla.xhtml" xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="cabeceras">
+        <h:outputScript library="js" name="ActualizarImagen.js"/>
+        <style>
+            .ui-fileupload-filename {
+                display: none;
+            }
+        </style>
+        <script>
+            $(function () {
+                $("input[type='file']").change(function () {
+                    readImage(this, $("[id*=pnlgdImagen]").find("[id*=giIlustracion]"));
+                });
+            });
+        </script>
+    </ui:define>
+
+    <ui:define name="titulo">
+        Gestionar carta
+    </ui:define>
+
+    <ui:define name="contenido">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-3">
+                <div class="card preview-image-container">
+                    <h:form enctype="multipart/form-data">
+                        <p:panelGrid layout="grid" columns="1" columnClasses="ui-grid-col-12" id="pnlgdImagen"
+                                     styleClass="ui-panelgrid-blank" style="width: 100%; text-align: center">
+                            <p:graphicImage id="giIlustracion1" library="imagenes" name="unknowncard.jpg"
+                                            rendered="#{gestionCartaWebBean.imagen == null}"
+                                            style="width: 177px; height: 254px;"/>
+                            <p:graphicImage id="giIlustracion2" value="/images/#{gestionCartaWebBean.nombreImagen}"
+                                            rendered="#{gestionCartaWebBean.imagen != null}"
+                                            style="width: 177px; height: 254px;"/>
+                            <p:fileUpload id="fuIlustracion" mode="simple" skinSimple="true"
+                                          label="Selecciona una imagen..."
+                                          value="#{gestionCartaWebBean.imagen}">
+                            </p:fileUpload>
+                        </p:panelGrid>
+                    </h:form>
+                </div>
+            </div>
+            <div class="ui-lg-9 ui-g-12">
+                <div class="card card-w-title">
+                    <h1>Registrar nueva carta</h1>
+                    <h:form>
+                        <p:panelGrid layout="grid" columns="3"
+                                     columnClasses="ui-grid-col-3, ui-grid-col-6, ui-grid-col-3"
+                                     style="width: 100%">
+                            <f:facet name="header">
+                                <h3 style="margin: 0">Datos generales de la carta</h3>
+                            </f:facet>
+                            <p:outputLabel for="txtNombre" value="Nombre:" style="font-weight: bold;"/>
+                            <p:inputText id="txtNombre" value="#{gestionCartaWebBean.nombre}"/>
+                            <p:message for="txtNombre"/>
+
+                            <p:outputLabel for="txtEfecto" value="Efecto:" style="font-weight: bold;" rendered="#{!gestionCartaWebBean.tipoMonstruoNormal}"/>
+                            <p:inputTextarea id="txtEfecto" rendered="#{!gestionCartaWebBean.tipoMonstruoNormal}"/>
+                            <p:message for="txtEfecto" rendered="#{!gestionCartaWebBean.tipoMonstruoNormal}"/>
+
+                            <p:outputLabel for="cboLimitacion" value="Limitacion en la Banlist:"
+                                           style="font-weight: bold;"/>
+                            <p:selectOneMenu id="cboLimitacion" converter="LimitacionConverter"
+                                             value="#{gestionCartaWebBean.limitacionCartaSeleccionada}">
+                                <f:selectItem itemLabel="Selecciona la limitacion de la carta"
+                                              noSelectionOption="true"/>
+                                <f:selectItems value="#{gestionCartaWebBean.limitacionCartasModel}" var="limitacion"
+                                               itemValue="#{limitacion}" itemLabel="#{limitacion.nombre}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboLimitacion"/>
+
+                            <p:outputLabel for="cboCategoriaCarta" value="Categoria de la carta:"
+                                           style="font-weight: bold;"/>
+                            <p:selectOneMenu id="cboCategoriaCarta"
+                                             value="#{gestionCartaWebBean.categoriaCartaSeleccionado}"
+                                             converter="CategoriaCartaConverter">
+                                <p:ajax event="itemSelect" listener="#{gestionCartaWebBean.onChangeCategoriaCarta}"
+                                        process="@this" update="@parent,pnldgContenedor" partialSubmit="true" immediate="true"/>
+                                <f:selectItem itemLabel="Selecciona una categoria de carta"/>
+                                <f:selectItems value="#{gestionCartaWebBean.categoriaCartasModel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboCategoriaCarta"/>
+                        </p:panelGrid>
+                        <h:panelGroup layout="block" id="pnldgContenedor" style="width: 100%;">
+                            <p:panelGrid layout="grid" columns="3"
+                                         rendered="#{gestionCartaWebBean.tipoMonstruoSeleccionado}"
+                                         columnClasses="ui-grid-col-3, ui-grid-col-6, ui-grid-col-3"
+                                         style="width: 100%">
+                                <f:facet name="header">
+                                    <h3 style="margin: 0">Datos de carta de monstruo</h3>
+                                </f:facet>
+                                <p:outputLabel value="Atributo de monstruo:" style="font-weight: bold;"/>
+                                <p:selectOneMenu id="cboAtributoMonstruo"
+                                                 value="#{gestionCartaWebBean.atributoMonstruoSeleccionado}"
+                                                 converter="AtributoMonstruoConverter">
+                                    <f:selectItem itemLabel="Selecciona un atributo para el monstruo"
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{gestionCartaWebBean.atributoMonstruosModel}" var="atributo"
+                                                   itemValue="#{atributo}" itemLabel="#{atributo.nombre}"/>
+                                </p:selectOneMenu>
+                                <p:message for="cboAtributoMonstruo"/>
+
+                                <p:outputLabel for="smcTipoMonstruo" value="Tipos de monstruo:"
+                                               style="font-weight: bold;"/>
+                                <p:selectManyCheckbox id="smcTipoMonstruo"
+                                                      value="#{gestionCartaWebBean.tipoMounstrosSeleccionados}"
+                                                      layout="responsive" style="width: 100%;" columns="2"
+                                                      converter="TipoMonstruoConverter">
+                                    <f:selectItems value="#{gestionCartaWebBean.tipoMounstrosModel}" var="tipomonstruo"
+                                                   itemValue="#{tipomonstruo}" itemLabel="#{tipomonstruo.nombre}"/>
+                                </p:selectManyCheckbox>
+                                <p:message for="smcTipoMonstruo"/>
+
+                                <p:outputLabel value="Materiales de invocacion:"
+                                               style="font-weight: bold;"
+                                               rendered="#{gestionCartaWebBean.tipoMonstruoExtraDeck}"/>
+                                <p:inputTextarea rendered="#{gestionCartaWebBean.tipoMonstruoExtraDeck}"/>
+                                <p:spacer rendered="#{gestionCartaWebBean.tipoMonstruoExtraDeck}"/>
+
+                                <p:outputLabel value="Ataque: " style="font-weight: bold;"/>
+                                <p:spinner/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Defensa: " style="font-weight: bold;"/>
+                                <p:spinner/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Tipo de escala:" style="font-weight: bold;"/>
+                                <p:selectOneMenu/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Escala:" style="font-weight: bold;"/>
+                                <p:spinner max="12"/>
+                                <p:spacer/>
+                            </p:panelGrid>
+                            <p:panelGrid layout="grid" columns="3"
+                                         rendered="#{gestionCartaWebBean.tipoMonstruoPenduloSeleccionado}"
+                                         columnClasses="ui-grid-col-3, ui-grid-col-6, ui-grid-col-3"
+                                         style="width: 100%">
+                                <f:facet name="header">
+                                    <h3 style="margin: 0">Datos de Monstruo Pendúlo</h3>
+                                </f:facet>
+
+                                <p:outputLabel value="Efecto Pendulo:" style="font-weight: bold;"/>
+                                <p:inputTextarea/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Escala izquierda" style="font-weight: bold;"/>
+                                <p:spinner max="13"/>
+                                <p:spacer/>
+
+                                <p:outputLabel value="Escala derecha" style="font-weight: bold;"/>
+                                <p:spinner max="13"/>
+                                <p:spacer/>
+                            </p:panelGrid>
+
+                            <p:panelGrid layout="grid" columns="3"
+                                         rendered="#{gestionCartaWebBean.tipoMonstruoLinkSeleccionado}"
+                                         columnClasses="ui-grid-col-3, ui-grid-col-6, ui-grid-col-3"
+                                         style="width: 100%">
+                                <f:facet name="header">
+                                    <h3 style="margin: 0;">Datos de Monstruo Link</h3>
+                                </f:facet>
+
+                                <p:outputLabel value="Flechas:" style="font-weight: bold;"/>
+                                <p:panelGrid layout="grid" columns="3"
+                                             columnClasses="ui-grid-col-2, ui-grid-col-2, ui-grid-col-2"
+                                             styleClass="ui-panelgrid-blank" style="width: 100%">
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-upward"
+                                                           offIcon="ui-icon-arrow-upward"
+                                                           style="transform: rotate(315deg);"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-upward"
+                                                           offIcon="ui-icon-arrow-upward"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-upward"
+                                                           offIcon="ui-icon-arrow-upward"
+                                                           style="transform: rotate(45deg);"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-back"
+                                                           offIcon="ui-icon-arrow-back"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-all-inclusive"
+                                                           offIcon="ui-icon-all-inclusive"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-forward"
+                                                           offIcon="ui-icon-arrow-forward"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-downward"
+                                                           offIcon="ui-icon-arrow-downward"
+                                                           style="transform: rotate(45deg);"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-downward"
+                                                           offIcon="ui-icon-arrow-downward"/>
+                                    <p:selectBooleanButton onLabel="" offLabel=""
+                                                           onIcon="ui-icon-arrow-downward"
+                                                           offIcon="ui-icon-arrow-downward"
+                                                           style="transform: rotate(315deg);"/>
+                                </p:panelGrid>
+                                <p:spacer/>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                        <p:panelGrid layout="grid" columns="3" columnClasses="ui-grid-col-3, ui-grid-col-2"
+                                     styleClass="ui-panelgrid-blank" style="width: 100%">
+                            <p:commandButton icon="ui-icon-save" value="Guardar Carta" ajax="false"/>
+                            <p:commandButton icon="ui-icon-cancel" value="Cancelar" styleClass="secondary-btn"/>
+                        </p:panelGrid>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

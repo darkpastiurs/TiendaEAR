@@ -73,7 +73,7 @@ public class GestionCategoriaController implements Serializable {
         }
     }
 
-    //    @PreDestroy
+    //@PreDestroy
     public void destroy(PhaseEvent evt) {
         LOG.log(Level.INFO, "[GestionCategoriaController][destroy]");
         try {

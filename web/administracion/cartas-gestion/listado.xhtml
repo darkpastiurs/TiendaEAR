@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/plantilla/plantilla.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="cabeceras">
+        <style>
+            .carta-datalist .text-column p:last-child {
+                color: #757575;
+            }
+
+            .carta-datalist .carta-item i, .carta-datalist .carta-item .carta-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .carta-datalist .carta-item button {
+                float: right;
+            }
+
+            .carta-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            .ui-carta-display td:last-child {
+                font-weight: 700;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="titulo">
+        Listado de Cartas
+    </ui:define>
+
+    <ui:define name="contenido">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="card card-w-title">
+                    <h1>Listado de Cartas registradas</h1>
+                    <h:form>
+                        <p:dataList value="#{listadoCartasWebBean.cartasModelo}" var="carta"
+                                    paginator="true"
+                                    rows="10"
+                                    emptyMessage="No se han encontrado cartas"
+                                    styleClass="carta-datalist"
+                        >
+                            <f:facet name="header">
+                                <p:commandButton title="Añadir nueva carta" icon="ui-icon-plus" action="cartasgestion"
+                                                 styleClass="secondary-btn"/>
+                            </f:facet>
+                            <div style="border-bottom: 1px solid #BDBDBD" class="clearfix carta-item">
+                                <svg width="80%" heigth="100%">
+                                    <rect x="50" y="20" width="80%" heigth="100%"
+                                          style="fill:red;stroke: blue;stroke-width: 5;opacity: 0.5"/>
+                                </svg>
+                                <div class="carta-details">
+                                    <p>#{carta.nombre}</p>
+                                    <p>#{carta.categoria.nombre}</p>
+                                    <p>#{carta.limite.nombre}</p>
+                                </div>
+                                <p:commandButton title="Editar carta" icon="ui-icon-edit" style="margin:24px 24px 0 0"
+                                                 action="#{listadoCartasWebBean.enviarCarta}">
+                                    <f:setPropertyActionListener value="#{carta}"
+                                                                 target="#{listadoCartasWebBean.cartaSeleccionada}"/>
+                                </p:commandButton>
+                                <p:commandButton title="Eliminar carta" icon="ui-icon-delete"
+                                                 style="margin:24px 24px 0 0"
+                                                 action="#{listadoCartasWebBean.eliminarCarta}"
+                                                 styleClass="secondary-btn">
+                                    <f:setPropertyActionListener value="#{carta}"
+                                                                 target="#{listadoCartasWebBean.cartaSeleccionada}"/>
+                                    <p:confirm header="Gestion de Cartas"
+                                               message="¿Esta seguro de eliminar la carta #{carta.nombre}?"/>
+                                </p:commandButton>
+                            </div>
+                        </p:dataList>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si"
+                                             styleClass="ui-confirmdialog-yes"
+                                             icon="ui-icon-check"
+                                             type="submit"/>
+                            <p:commandButton value="No"
+                                             styleClass="ui-confirmdialog-no"
+                                             icon="ui-icon-close"
+                                             type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
