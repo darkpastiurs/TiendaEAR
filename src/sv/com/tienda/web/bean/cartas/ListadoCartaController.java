@@ -1,5 +1,7 @@
 package sv.com.tienda.web.bean.cartas;
 
+import org.apache.commons.lang.StringUtils;
+import sv.com.tienda.business.ejb.CartaBean;
 import sv.com.tienda.business.ejb.CartaBeanLocal;
 import sv.com.tienda.business.entity.Carta;
 import sv.com.tienda.business.utils.Constantes;
@@ -11,10 +13,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import static java.util.logging.Level.INFO;
 

@@ -1,5 +1,6 @@
 package sv.com.tienda.business.ejb;
 
+import org.apache.commons.lang.StringUtils;
 import sv.com.tienda.business.entity.*;
 
 import javax.ejb.Stateless;
@@ -630,11 +631,81 @@ public class CartaBean implements CartaBeanLocal {
             }
             carta.setNombre(cartaGuardar.getNombre());
             carta.setEfecto(cartaGuardar.getEfecto());
-            carta.setCategoria(cartaGuardar.getCategoria());
+            List<CategoriaCarta> categoriaCartas = cartaGuardar.getCategorias();
+            categoriaCartas.forEach(cc -> {
+                if(cc.isRemover()){
+                    carta.removeCategoria(cc);
+                }else{
+                    carta.addCategoria(cc);
+                }
+            });
             carta.setLimite(cartaGuardar.getLimite());
-            carta.setIlustracion(cartaGuardar.getIlustracion());
             if (cartaGuardar.getMonstruo() != null) {
-                carta.setMonstruo(cartaGuardar.getMonstruo());
+                Monstruo monstruoGuardar = cartaGuardar.getMonstruo();
+                Monstruo monstruo;
+                if (monstruoGuardar.getId() != null) {
+                    monstruo = em.find(Monstruo.class, monstruoGuardar.getId());
+                } else {
+                    monstruo = new Monstruo();
+                }
+                monstruo.setAtaque(monstruoGuardar.getAtaque());
+                monstruo.setDefensa(monstruoGuardar.getDefensa());
+                monstruo.setAtributo(monstruoGuardar.getAtributo());
+                List<TipoMounstro> tipoMounstros = monstruoGuardar.getTipos();
+                tipoMounstros.stream().forEach((TipoMounstro tm) -> {
+                    if (tm.isRemover()) {
+                        monstruo.removeTipoMonstruo(tm);
+                    } else {
+                        monstruo.addTipoMonstruo(tm);
+                    }
+                });
+                if (StringUtils.isNotBlank(monstruoGuardar.getMaterialInvocacion())) {
+                    monstruo.setMaterialInvocacion(cartaGuardar.getMonstruo().getMaterialInvocacion());
+                }
+                monstruo.setTipoEscala(monstruoGuardar.getTipoEscala());
+                monstruo.setEscala(monstruoGuardar.getEscala());
+                if (monstruoGuardar.getPenduloAtributos() != null) {
+                    Pendulo penduloGuardar = monstruoGuardar.getPenduloAtributos();
+                    Pendulo pendulo;
+                    if (penduloGuardar.getId() != null) {
+                        pendulo = em.find(Pendulo.class, carta.getId());
+                    } else {
+                        pendulo = new Pendulo();
+                    }
+                    pendulo.setEfecto(penduloGuardar.getEfecto());
+                    pendulo.setIzquierda(penduloGuardar.getIzquierda());
+                    pendulo.setDerecha(penduloGuardar.getDerecha());
+                    pendulo.setMonstruo(monstruo);
+                    monstruo.setPenduloAtributos(pendulo);
+                } else {
+                    monstruo.setPenduloAtributos(null);
+                }
+                if (monstruoGuardar.getFlechasLinks() != null && !monstruoGuardar.getFlechasLinks().isEmpty()) {
+                    List<FlechaLink> flechaLinks = monstruoGuardar.getFlechasLinks();
+                    flechaLinks.stream().forEach(flechaLink -> {
+                        if (flechaLink.isRemover()) {
+                            monstruo.removerFlechaLink(flechaLink);
+                        } else {
+                            monstruo.addFlechaLink(flechaLink);
+                        }
+                    });
+                } else {
+                    monstruo.setFlechasLinks(null);
+                }
+                monstruo.setCarta(carta);
+                carta.setMonstruo(monstruo);
+            }
+
+            if (cartaGuardar.getImagen() != null) {
+                Imagen ilustracionGuardar = cartaGuardar.getImagen();
+                Imagen ilustracion = null;
+                if (ilustracionGuardar.getId() != null) {
+                    ilustracion = em.find(Imagen.class, ilustracionGuardar.getId());
+                } else {
+                    ilustracion = new Imagen();
+                }
+                ilustracion.setArchivo(ilustracionGuardar.getArchivo());
+                carta.setImagen(ilustracion);
             }
             if (carta.getId() == null) {
                 em.persist(carta);

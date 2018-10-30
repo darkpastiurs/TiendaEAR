@@ -7,17 +7,11 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(schema = "teo", name = "pendulos", uniqueConstraints = {
-        @UniqueConstraint(name = "unq_monstruo", columnNames = {"idmonstruo"})
-})
-@SequenceGenerator(schema = "teo", name = "Pendulo_seq_id", sequenceName = "pendulos_id_seq", allocationSize = 1)
+@Table(schema = "teo", name = "pendulos")
 public class Pendulo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Pendulo_seq_id")
-    @NotNull
-    @Column(name = "id")
     private Long id;
     @NotNull
     @Lob
@@ -31,12 +25,14 @@ public class Pendulo implements Serializable {
     @NotNull
     @Min(0)
     @Max(13)
+    @Column(name = "escaladerecha")
     private Short derecha;
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
     @OneToOne(fetch = FetchType.LAZY, targetEntity = Monstruo.class)
-    @JoinColumn(name = "idmonstruo", referencedColumnName = "id")
+    @MapsId("id")
+    @JoinColumn(name = "idmonstruo")
     private Monstruo monstruo;
 
     public Long getId() {

@@ -27,6 +27,9 @@ public class FlechaLink implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
+    @Transient
+    private boolean remover = false;
+
     public Short getId() {
         return id;
     }
@@ -49,6 +52,14 @@ public class FlechaLink implements Serializable {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public boolean isRemover() {
+        return remover;
+    }
+
+    public void setRemover(boolean remover) {
+        this.remover = remover;
     }
 
     @Override

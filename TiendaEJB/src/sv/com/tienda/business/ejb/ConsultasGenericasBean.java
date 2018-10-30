@@ -30,7 +30,7 @@ public class ConsultasGenericasBean implements ConsultasGenericasBeanLocal {
      */
     @Override
     public <T> T find(Class<T> entity, Object id) {
-        LOG.log(Level.INFO, "[ConsultasGenericasBean][find] -> {0}, {1}", new Object[]{entity, id});
+//        LOG.log(Level.INFO, "[ConsultasGenericasBean][find] -> {0}, {1}", new Object[]{entity, id});
         Object idValue = null;
         try {
             Class idType = null;

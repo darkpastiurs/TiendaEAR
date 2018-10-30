@@ -11,6 +11,7 @@
         <validation-mode>NONE</validation-mode>
         <properties>
             <property name="eclipselink.target-server" value="JBoss"/>
+            <property name="eclipselink.target-database" value="PostgreSQL" />
             <property name="eclipselink.deploy-on-startup" value="true" />
             <property name="eclipselink.logging.level" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>

@@ -34,9 +34,6 @@ public class Inventario implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = EstadoCarta.class)
     @JoinColumn(name = "idestadocarta", referencedColumnName = "id")
     private EstadoCarta estadoCarta;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Imagen.class)
-    @JoinColumn(name = "idimagen", referencedColumnName = "id")
-    private Imagen imagen;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Tienda.class)
     @JoinColumn(name = "iditienda", referencedColumnName = "id")
     private Tienda tienda;
@@ -89,14 +86,6 @@ public class Inventario implements Serializable {
         this.estadoCarta = estadoCarta;
     }
 
-    public Imagen getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(Imagen imagen) {
-        this.imagen = imagen;
-    }
-
     public Tienda getTienda() {
         return tienda;
     }
@@ -129,7 +118,6 @@ public class Inventario implements Serializable {
         sb.append(", edicion=").append(edicion);
         sb.append(", carta=").append(carta);
         sb.append(", estadoCarta=").append(estadoCarta);
-        sb.append(", imagen=").append(imagen);
         sb.append(", tienda=").append(tienda);
         sb.append('}');
         return sb.toString();

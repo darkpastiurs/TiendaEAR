@@ -29,8 +29,11 @@ public class TipoMounstro implements Serializable {
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
-    @ManyToMany(mappedBy = "tipos", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Monstruo.class)
+    @ManyToMany(mappedBy = "tipos", fetch = FetchType.LAZY, targetEntity = Monstruo.class)
     private List<Monstruo> monstruos;
+
+    @Transient
+    private boolean remover = false;
 
     public Integer getId() {
         return id;
@@ -62,6 +65,14 @@ public class TipoMounstro implements Serializable {
 
     public void setMonstruos(List<Monstruo> monstruos) {
         this.monstruos = monstruos;
+    }
+
+    public boolean isRemover() {
+        return remover;
+    }
+
+    public void setRemover(boolean remover) {
+        this.remover = remover;
     }
 
     @Override

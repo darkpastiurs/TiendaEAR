@@ -1,4 +1,4 @@
-package sv.com.tienda.web.filter;
+package sv.com.tienda.web.configuracion.filter;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -10,8 +10,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.util.logging.Level.INFO;
 
 @WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"*.xhtml"})
 public class AuthenticationFilter implements Filter {

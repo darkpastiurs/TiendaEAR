@@ -27,6 +27,10 @@ public class CategoriaCarta implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
+    @NotNull
+    @Size(min=6)
+    @Column(name = "color")
+    private String color;
     @Column(name = "estado", columnDefinition = "boolean default true")
     private boolean estado = true;
 
@@ -47,7 +51,7 @@ public class CategoriaCarta implements Serializable {
     @OneToMany(mappedBy = "categoriaCartaSuperior", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CategoriaCarta.class)
     private List<CategoriaCarta> subcategorias;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
+    @ManyToMany(mappedBy = "categorias", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
     private List<Carta> cartas;
 
     public Integer getId() {
@@ -64,6 +68,14 @@ public class CategoriaCarta implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public CategoriaCarta getCategoriaCartaSuperior() {

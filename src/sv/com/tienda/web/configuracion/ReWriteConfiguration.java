@@ -21,10 +21,10 @@ public class ReWriteConfiguration extends HttpConfigurationProvider {
     public Configuration getConfiguration(ServletContext context) {
         ConfigurationBuilder config = ConfigurationBuilder.begin();
         //Configuracion de paginas publicos
-        config.addRule(Join.path("/inicio").to("/public/index.xhtml"));
-        config.addRule(Join.path("/login").to("/public/login.xhtml"));
+        config.addRule(Join.path("/inicio/").to("/public/index.xhtml"));
+        config.addRule(Join.path("/login/").to("/public/login.xhtml"));
         //Configuracion de paginas de error
-        config.addRule(Join.path("/denegado").to("/WEB-INF/errorpages/error403.xhtml"));
+        config.addRule(Join.path("/denegado/").to("/WEB-INF/errorpages/error403.xhtml"));
         //<editor-fold defaultstate="collapsed" desc="Configuracion para categoria de cartas">
         config.addRule(
                 Join.path("/administracion/categorias/")
@@ -47,25 +47,25 @@ public class ReWriteConfiguration extends HttpConfigurationProvider {
         );
         config.addRule(
                 Join.path("/administracion/monstruos/atributo/nuevo/")
-                .to("/administracion/cartas-gestion/monstruos/atributos/gestion.xhtml")
+                        .to("/administracion/cartas-gestion/monstruos/atributos/gestion.xhtml")
         );
         config.addRule(
                 Join.path("/administracion/monstruos/atributo/editar/{atributo}/")
-                .to("/administracion/cartas-gestion/monstruos/atributos/gestion.xhtml")
+                        .to("/administracion/cartas-gestion/monstruos/atributos/gestion.xhtml")
         ).where("atributo");
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Configuracion para tipos de monstruos">
         config.addRule(
                 Join.path("/administracion/monstruos/tipos/")
-                .to("/administracion/cartas-gestion/monstruos/tipos/listado.xhtml")
+                        .to("/administracion/cartas-gestion/monstruos/tipos/listado.xhtml")
         );
         config.addRule(
-          Join.path("/administracion/monstruos/tipo/nuevo/")
-          .to("/administracion/cartas-gestion/monstruos/tipos/gestion.xhtml")
+                Join.path("/administracion/monstruos/tipo/nuevo/")
+                        .to("/administracion/cartas-gestion/monstruos/tipos/gestion.xhtml")
         );
         config.addRule(
                 Join.path("/administracion/monstruos/tipo/editar/{tipo}/")
-                .to("/administracion/cartas-gestion/monstruos/tipos/gestion.xhtml")
+                        .to("/administracion/cartas-gestion/monstruos/tipos/gestion.xhtml")
         );
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Configuracion para estructura del deck">
@@ -75,16 +75,23 @@ public class ReWriteConfiguration extends HttpConfigurationProvider {
         );
         config.addRule(
                 Join.path("/administracion/estructura-deck/nueva-seccion/")
-                    .to("/administracion/componentedeck/gestion.xhtml")
+                        .to("/administracion/componentedeck/gestion.xhtml")
         );
         config.addRule(
                 Join.path("/administracion/estructura-deck/editar-seccion/{componenteDeck}/")
-                    .to("/administracion/componentedeck/gestion.xhtml")
+                        .to("/administracion/componentedeck/gestion.xhtml")
         );
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Configuracion de cartas">
-        config.addRule(Join.path("/administracion/cartas/").to("/administracion/cartas-gestion/listado.xhtml"));
-        config.addRule(Join.path("/administracion/carta/nuevo/").to("/administracion/cartas-gestion/gestion.xhtml"));
+        config.addRule(
+                Join.path("/administracion/cartas/")
+                        .to("/administracion/cartas-gestion/listado.xhtml"));
+        config.addRule(
+                Join.path("/administracion/carta/nueva/")
+                        .to("/administracion/cartas-gestion/gestion.xhtml"));
+        config.addRule(
+                Join.path("/administracion/carta/editar/{cartaNombre}")
+                        .to("/administracion/cartas-gestion/gestion.xhtml"));
         //</editor-fold>
         return config;
     }

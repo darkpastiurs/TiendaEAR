@@ -4,20 +4,15 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(schema = "teo", name = "monstruos", uniqueConstraints = {
-        @UniqueConstraint(name = "unq_carta", columnNames = {"idcarta"})
-})
-@SequenceGenerator(schema = "teo", name = "Monstruo_seq_id", sequenceName = "monstruos_id_seq", allocationSize = 1)
+@Table(schema = "teo", name = "monstruos")
 public class Monstruo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Monstruo_seq_id")
-    @NotNull
-    @Column(name = "id")
     private Long id;
     @NotNull
     @Min(0)
@@ -35,24 +30,28 @@ public class Monstruo implements Serializable {
     private boolean estado = true;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Carta.class)
-    @JoinColumn(name = "idcarta", referencedColumnName = "id")
+    @MapsId("id")
+    @JoinColumn(name = "idcarta")
     private Carta carta;
-    @OneToOne(mappedBy = "monstruo", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pendulo.class)
+
+    @OneToOne(mappedBy = "monstruo", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pendulo.class, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
     private Pendulo penduloAtributos;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = AtributoMonstruo.class)
     @JoinColumn(name = "idatributo", referencedColumnName = "id")
     private AtributoMonstruo atributo;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = TipoMounstro.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = TipoMounstro.class)
     @JoinTable(schema = "teo", name = "monstruos_tipos",
-            joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "idcarta"),
             inverseJoinColumns = @JoinColumn(name = "idtipomonstruo", referencedColumnName = "id"))
     private List<TipoMounstro> tipos;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = FlechaLink.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = FlechaLink.class)
     @JoinTable(name = "links", schema = "teo",
-            joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "idmonstruo", referencedColumnName = "idcarta"),
             inverseJoinColumns = @JoinColumn(name = "idflecha", referencedColumnName = "id"))
     private List<FlechaLink> flechasLinks;
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TipoEscala.class)
     @JoinColumn(name = "idtipoescala", referencedColumnName = "id")
     private TipoEscala tipoEscala;
@@ -153,6 +152,35 @@ public class Monstruo implements Serializable {
         this.tipoEscala = tipoEscala;
     }
 
+    public void addTipoMonstruo(TipoMounstro tipoMounstro){
+        if(tipos == null){
+            tipos = new ArrayList<>();
+        }
+        if(!tipos.contains(tipoMounstro)){
+            tipoMounstro.getMonstruos().add(this);
+            tipos.add(tipoMounstro);
+        }
+    }
+
+    public void removeTipoMonstruo(TipoMounstro tipoMounstro){
+        tipoMounstro.getMonstruos().removeIf(m -> m.equals(this));
+        tipos.removeIf(tm -> tm.equals(tipoMounstro));
+    }
+
+    public void addFlechaLink(FlechaLink flechaLink){
+        if(flechasLinks == null){
+            flechasLinks = new ArrayList<>();
+        }
+        if(!flechasLinks.contains(flechaLink)){
+            flechasLinks.add(flechaLink);
+        }
+    }
+
+    public void removerFlechaLink(FlechaLink flechaLink){
+
+        flechasLinks.removeIf(fl -> fl.equals(flechaLink));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,12 +200,11 @@ public class Monstruo implements Serializable {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Monstruo{");
         sb.append("id=").append(id);
-        sb.append(", carta=").append(carta.getNombre());
-        sb.append(", atributo=").append(atributo.getNombre());
-        sb.append(", tipo=").append(carta.getCategoria().getNombre());
+        sb.append(", carta=").append(carta);
+        sb.append(", atributo=").append(atributo);
         sb.append(", ataque=").append(ataque);
         sb.append(", defensa=").append(defensa);
-        sb.append(", tipoescala=").append(tipoEscala.getNombre());
+        sb.append(", tipoescala=").append(tipoEscala);
         sb.append(", escala=").append(escala);
         sb.append(", materialInvocacion='").append(materialInvocacion);
         sb.append(", estado=").append(estado);
